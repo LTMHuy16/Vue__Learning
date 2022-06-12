@@ -1,8 +1,3 @@
-3h53
-
-// đang lỗi ở phần lấy dữ liệu đầu vào chưa có docId trong store
-
-// chỉnh sửa lại sự kiện trigger state editInvoice bằng cách gắn cho sự kiện cho 2 dấu mũi tên
 # invoice
 
 ## Project setup
