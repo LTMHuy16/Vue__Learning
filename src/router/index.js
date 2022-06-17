@@ -1,0 +1,82 @@
+import { createRouter, createWebHistory } from "vue-router";
+import { supabase } from "../supabase/index";
+import Home from "../views/Home.vue";
+import Login from "../views/Login.vue";
+import Register from "../views/Register.vue";
+import ViewWorkout from "../views/ViewWorkout.vue";
+import Create from "../views/Create.vue";
+
+const routes = [
+  {
+    path: "/",
+    name: "Home",
+    component: Home,
+    meta: {
+      title: "Home",
+      auth: false,
+    },
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
+    meta: {
+      title: "Login",
+      auth: false,
+    },
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: Register,
+    meta: {
+      title: "Register",
+      auth: false,
+    },
+  },
+  {
+    path: "/create",
+    name: "Create",
+    component: Create,
+    meta: {
+      title: "Create",
+      auth: true,
+    },
+  },
+  {
+    path: "/view-workout/:workoutId",
+    name: "ViewWorkout",
+    component: ViewWorkout,
+    meta: {
+      title: "ViewWorkout",
+      auth: false,
+    },
+  },
+];
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+});
+
+//= Change document title
+router.beforeEach((to, from, next) => {
+  document.title = `${to.meta.title} | Active Tracker`;
+  next();
+});
+
+//= Router guard for auth routes
+router.beforeEach((to, from, next) => {
+  const user = supabase.auth.user();
+  if (to.matched.some((res) => res.meta.auth)) {
+    if (user) {
+      next();
+      return;
+    }
+    next({ name: "Login" });
+    return;
+  }
+  next();
+});
+
+export default router;
